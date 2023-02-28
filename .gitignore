@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Other
+.vs/ISICG_ISIR_RT_2020/v16/ipch/AutoPCH/922c05fce2d3ea59/MAIN.ipch
+.vs/ISICG_ISIR_RT_2020/v16/ipch/AutoPCH/9138f3a9a7112a79/MAIN.ipch
+.vs/ISICG_ISIR_RT_2020/v16/ipch/AutoPCH/24ba43682691f6c/TRIANGLEMESH.ipch
+.vs/ISICG_ISIR_RT_2020/v16/Browse.VC.db
+.vs/ISICG_ISIR_RT_2020/v16/.suo
+.vs/ISICG_ISIR_RT_2020/v16/Browse.VC.opendb
