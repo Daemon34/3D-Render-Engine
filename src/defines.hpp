@@ -22,6 +22,8 @@ namespace ISICG_ISIR
 	const float ANTIALLIASING = 32.0f; // Nombre de supersampling pour l'anti-aliassage
 	const float FIN_DE_SCENE = 100.0f; // Arrêt du parcours du rayon pour le Sphere Tracing (metaballs)
 	const float META_COEFF = 8.0f; // Coefficient pour les metaballs
+
+	const int progressBarWidth = 70;
 	 
 } // namespace ISICG_ISIR
 

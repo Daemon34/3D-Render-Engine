@@ -21,8 +21,22 @@
 #include "3D/pointLight.hpp"
 #include "raytracer.hpp"
 
+#include <omp.h>
+
 namespace ISICG_ISIR
 {
+	void displayProgressBar(float progress, int height) {
+		std::cout << "[";
+		int pos = progressBarWidth * progress;
+		for (int i = 0; i < progressBarWidth; ++i) {
+			if (i < pos) std::cout << "=";
+			else if (i == pos) std::cout << ">";
+			else std::cout << " ";
+		}
+		std::cout << "] " << int(progress * 100.0) << " %\r";
+		std::cout.flush();
+	}
+
 	int main(int argc, char** argv)
 	{
 		if (argc != 4)
@@ -134,45 +148,61 @@ namespace ISICG_ISIR
 		// -------------------------- SCENE ------------------------------------------------------
 
 		std::vector<AObject3D*> objects;
-		objects.emplace_back(&sphereReflect4);
-		objects.emplace_back(&sphereReflect5);
+		//objects.emplace_back(&sphereReflect4);
+		//objects.emplace_back(&sphereReflect5);
 		//objects.emplace_back(&sphereReflect3);
 		//objects.emplace_back(&sphereVerte);
 		//objects.emplace_back(&sphereRouge);
 		//objects.emplace_back(&sphereViolet);
 		//objects.emplace_back(&sphereBleu);
-		objects.emplace_back(&plan);
-		objects.emplace_back(&metaballs);
+		//objects.emplace_back(&plan);
+		//objects.emplace_back(&metaballs);
 
 		Chrono chrono;
 		Camera maCamera = Camera(Vec3f(0.0f, 8.0f, -5.0f), Vec3f(0.0f, -0.5f, 1.0f), 0.5f, float(height) / float(width));
 
 		// --------------------------------------------------------------------------------------------
 
+		std::cout << "Setting up OpenMP..." << std::endl;
+		omp_set_nested(1);
+		std::cout << "Max thread available : " << omp_get_max_threads() << std::endl;
 
 		std::cout << "Rendering..." << std::endl;
+		float progress = 0.0f;
 		chrono.start();
 
 		// rendering loop
-		#pragma omp parallel for
-		for (uint h = 0; h < height; ++h)
+		#pragma omp parallel for collapse(2)
+		for (int h = 0; h < height; ++h)
 		{
-			for (uint w = 0; w < width; ++w)
+			for (int w = 0; w < width; ++w)
 			{
-				Vec3f sommeCouleur = VEC3F_ZERO;
+				std::vector<Vec3f> rayColors(ANTIALLIASING);
 
 				// Boucle pour l'antialliasing
-				for (int i = 0; i < ANTIALLIASING; i++) {
+				for (int i = 0; i < 32; i++) {
 					// Génération d'un rayon pour un pixel de l'image à partir de la caméra
 					Ray rayon = maCamera.generateRay(Vec3f(float(w + dis(gen)) / float(width), float(h + dis(gen)) / float(height), 0.0f));
-					sommeCouleur += couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
+					rayColors[i] = couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
 				}
-				Vec3f couleurFinale = sommeCouleur / ANTIALLIASING; // Moyenne des couleurs de chaque rayon
 
-				image.setPixel(w, h, couleurFinale); // Mise a jour du pixel dans l'image finale
+				Vec3f colorSumm = VEC3F_ZERO;
+				for (int i = 0; i < rayColors.size(); i++) {
+					colorSumm += rayColors[i];
+				}
+				Vec3f finalColor = colorSumm / ANTIALLIASING; // Moyenne des couleurs de chaque rayon
+
+				image.setPixel(w, h, finalColor); // Mise a jour du pixel dans l'image finale
 			}
+
+			// Only main thread should log things
+			if (omp_get_thread_num() == 0) {
+				displayProgressBar(progress, height);
+			}
+			progress += (1.0f / height);
 		}
 		chrono.stop();
+		std::cout << "=" << std::endl;
 		std::cout << "Rendering done. Image computed in "
 			<< chrono.elapsedTime() << "s (" << image.getWidth() << "x"
 			<< image.getHeight() << ")" << std::endl;
