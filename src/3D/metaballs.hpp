@@ -19,19 +19,19 @@ namespace ISICG_ISIR
 		}
 
 		// Fonction de distance signée pour une Sphere
-		float calculDistanceSphere(const Vec3f& point, const float& rayon) {
+		float calculDistanceSphere(const Vec3f& point, const float& rayon) const {
 			float resultat = length(point) - rayon;
 			return resultat;
 		}
 
 		// Permet le calcul des metaballs
-		float smin(const float& a, const float& b, const float& k) {
+		float smin(const float& a, const float& b, const float& k) const {
 			float h = glm::max(k - abs(a - b), 0.0f);
 			return glm::min(a, b) - h * h * 0.25f / k;
 		}
 
 		// Calcul du champ potentielle pour chaque sphère de la metaball
-		float calculDistanceMetaballs(const Vec3f& pointTouche) {
+		float calculDistanceMetaballs(const Vec3f& pointTouche) const {
 			float distance = 100.0f;
 			for (uint i = 0; i < _listeSphere.size(); i++) {
 				distance = smin(distance, calculDistanceSphere(pointTouche - _listeSphere[i].getPosition(), _listeSphere[i].getRadius()), META_COEFF);
@@ -40,7 +40,7 @@ namespace ISICG_ISIR
 		}
 
 		// Estimation de la normal en utilisant la méthode du gradient
-		Vec3f estimationDeLaNormale(const Vec3f& pointTouche) {
+		Vec3f estimationDeLaNormale(const Vec3f& pointTouche) const {
 			return normalize(Vec3f(
 				calculDistanceMetaballs(Vec3f(pointTouche.x + 0.0001f, pointTouche.y, pointTouche.z)) - calculDistanceMetaballs(Vec3f(pointTouche.x - 0.0001f, pointTouche.y, pointTouche.z)),
 				calculDistanceMetaballs(Vec3f(pointTouche.x, pointTouche.y + 0.0001f, pointTouche.z)) - calculDistanceMetaballs(Vec3f(pointTouche.x, pointTouche.y - 0.0001f, pointTouche.z)),
@@ -49,7 +49,7 @@ namespace ISICG_ISIR
 		}
 
 		// Sphere Tracing
-		std::vector<Intersection> intersect(const Ray& ray) override
+		std::vector<Intersection> intersect(const Ray& ray) const override
 		{
 			Intersection monIntersection;
 			monIntersection._distance = 0.0f;

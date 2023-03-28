@@ -13,7 +13,7 @@ namespace ISICG_ISIR
 
 		Vec3f _normale = VEC3F_ZERO;
 		float _distance = -1.f;
-		AObject3D *_obj = nullptr;
+		const AObject3D* _obj = nullptr;
 	};
 } // namespace ISICG_ISIR
 

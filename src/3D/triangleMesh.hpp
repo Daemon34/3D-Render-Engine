@@ -29,7 +29,7 @@ namespace ISICG_ISIR
 		TriangleMesh() = default;
 		void load(const std::string &path);
 
-		std::vector<Intersection> intersect(const Ray &ray) override;
+		std::vector<Intersection> intersect(const Ray &ray) const override;
 		void translate(const Vec3f& direction);
 		void scale(const Vec3f& facteur);
 		std::vector<Triangle>& getListeTriangle();

@@ -209,7 +209,7 @@ namespace ISICG_ISIR
 				displayProgressBar(progress);
 			}
 			#pragma omp atomic
-			progress += (1.0f / height);
+			progress += (1.0f / width);
 		}
 		chrono.stop();
 		std::cout << "=" << std::endl;

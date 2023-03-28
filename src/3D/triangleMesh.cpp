@@ -80,19 +80,19 @@ namespace ISICG_ISIR
 		setListeTriangle();
 	}
 
-	std::vector<Intersection> TriangleMesh::intersect(const Ray &ray)
+	std::vector<Intersection> TriangleMesh::intersect(const Ray &ray) const
 	{
 		std::vector<Intersection> mesIntersections;
-		for (int i = 0; i < _listeTriangle.size(); i++) {
+		for (auto& triangle : _listeTriangle) {
+			std::vector<Intersection> mesIntersectionsTriangle = triangle.intersect(ray);
+			float distanceMin = std::numeric_limits<float>::max();
 			Intersection monIntersection;
-			std::vector<Intersection> mesIntersectionsTriangle = _listeTriangle[i].intersect(ray);
-			float distanceMin = -1.0f;
-			for (uint i = 0; i < mesIntersectionsTriangle.size(); i++)
+			for (auto& intersection : mesIntersectionsTriangle)
 			{
-				if (mesIntersectionsTriangle[i]._distance > -1.0f && (distanceMin > mesIntersectionsTriangle[i]._distance || distanceMin == -1.0f))
+				if (intersection._distance > -1.0f && distanceMin > intersection._distance)
 				{
-					distanceMin = mesIntersectionsTriangle[i]._distance;
-					monIntersection = mesIntersectionsTriangle[i];
+					distanceMin = intersection._distance;
+					monIntersection = intersection;
 					monIntersection._obj = this;
 				}
 			}

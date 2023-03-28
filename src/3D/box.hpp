@@ -109,7 +109,7 @@ namespace ISICG_ISIR
 			}
 		}
 
-		std::vector<Intersection> intersect(const Ray& ray) override
+		std::vector<Intersection> intersect(const Ray& ray) const override
 		{
 			Intersection monIntersection;
 			monIntersection._normale = VEC3F_ZERO;

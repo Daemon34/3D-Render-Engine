@@ -22,7 +22,7 @@ namespace ISICG_ISIR
 
 		// Compute ray/object intersection 
 		// return parameter t and set normal if intersection exists
-		virtual std::vector<Intersection> intersect(const Ray &ray)
+		virtual std::vector<Intersection> intersect(const Ray &ray) const
 			= 0;
 
 	protected:

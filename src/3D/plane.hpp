@@ -18,7 +18,7 @@ namespace ISICG_ISIR
 		{
 		}
 
-		std::vector<Intersection> intersect(const Ray& ray) override
+		std::vector<Intersection> intersect(const Ray& ray) const override
 		{
 			Intersection monIntersection;
 			std::vector<Intersection> mesIntersections = std::vector<Intersection>();

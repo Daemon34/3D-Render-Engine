@@ -75,7 +75,7 @@ namespace ISICG_ISIR
 			}
 		}
 
-		Intersection parcoursBVH(const Ray& rayon) {
+		Intersection parcoursBVH(const Ray& rayon) const {
 			Intersection monIntersection;
 			monIntersection._obj = nullptr;
 			float distanceMin = -1.0f;
