@@ -1,25 +1,3 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Fortran module files
-*.mod
-*.smod
-
-# Executables
-*.exe
-*.out
-*.app
-
 # Other
 .vs/ISICG_ISIR_RT_2020/v16/ipch/AutoPCH/922c05fce2d3ea59/MAIN.ipch
 .vs/ISICG_ISIR_RT_2020/v16/ipch/AutoPCH/9138f3a9a7112a79/MAIN.ipch
