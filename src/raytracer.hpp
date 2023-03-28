@@ -83,7 +83,7 @@ Vec3f couleur(const Ray& rayon, uint nbRecursive, const Light& lumiere, std::vec
 		Vec3f couleurBase = intersection._obj->getMaterial()->shade(rayon, intersection, lumiere);
 		maCouleur = (1.0f - (reflectiviteObjet + refractiviteObjet)) * couleurBase + reflectiviteObjet * couleurReflectivite + refractiviteObjet * couleurRefractivite;
 		Vec3f positionIntersection = rayon.getPosition() + (intersection._distance) * rayon.getDirection();
-		float nbIntersectionsOmbres = 0.0f;
+		int nbIntersectionsOmbres = 0;
 		for (int i = 0; i < nbRayonSphereLight; i++) {
 			Ray rayonOmbre = Ray(positionIntersection, lumiere.getPosition() - positionIntersection);
 			Intersection intersectionOmbre = calculIntersections(objects, rayonOmbre, MAX_DISTANCE, DIST_EPSILON, monBVH);
@@ -91,8 +91,8 @@ Vec3f couleur(const Ray& rayon, uint nbRecursive, const Light& lumiere, std::vec
 				nbIntersectionsOmbres += 1;
 			}
 		}
-		if (nbIntersectionsOmbres > 0.0f) {
-			float coeffOmbre = nbIntersectionsOmbres / nbRayonSphereLight;
+		if (nbIntersectionsOmbres > 0) {
+			float coeffOmbre = static_cast<float>(nbIntersectionsOmbres) / nbRayonSphereLight;
 			maCouleur = (0.6f * (1.0f - coeffOmbre)) * maCouleur;
 		}
 	}
