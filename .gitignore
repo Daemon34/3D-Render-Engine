@@ -38,3 +38,14 @@
 .vs/ISICG_ISIR_RT_2020/v16/Browse.VC.db
 .vs/ISICG_ISIR_RT_2020/v16/.suo
 .vs/ISICG_ISIR_RT_2020/v16/Browse.VC.opendb
+
+# Visual Studio Cache
+.vs/
+
+# Build Output
+x64/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
