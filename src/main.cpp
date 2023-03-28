@@ -190,19 +190,14 @@ namespace ISICG_ISIR
 		{
 			for (int h = 0; h < height; ++h)
 			{
-				std::vector<Vec3f> rayColors(ANTIALLIASING);
-
+				Vec3f colorSumm = VEC3F_ZERO;
 				// Boucle pour l'antialliasing
-				for (int i = 0; i < rayColors.size(); i++) {
+				for (int i = 0; i < ANTIALLIASING; i++) {
 					// G�n�ration d'un rayon pour un pixel de l'image � partir de la cam�ra
 					Ray rayon = maCamera.generateRay(Vec3f(float(w + dis(gen)) / float(width), float(h + dis(gen)) / float(height), 0.0f));
-					rayColors[i] = couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
+					colorSumm += couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
 				}
 
-				Vec3f colorSumm = VEC3F_ZERO;
-				for (int i = 0; i < rayColors.size(); i++) {
-					colorSumm += rayColors[i];
-				}
 				Vec3f finalColor = colorSumm / ANTIALLIASING; // Moyenne des couleurs de chaque rayon
 
 				image->setPixel(w, h, finalColor); // Mise a jour du pixel dans l'image finale
