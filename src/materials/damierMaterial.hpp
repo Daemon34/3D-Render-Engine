@@ -8,8 +8,9 @@ namespace ISICG_ISIR
 	class DamierMaterial : public AMaterial
 	{
 	public:
-		DamierMaterial(const Vec3f& color, const float& parametreDiffus, const float& parametreAmbiant, const float& parametreSpeculaire, const float& reflectivite, const float& refractivite, const float& indiceRefraction) :
-			_color(color),
+		DamierMaterial(const Vec3f& colorA, const Vec3f& colorB, const float& parametreDiffus, const float& parametreAmbiant, const float& parametreSpeculaire, const float& reflectivite, const float& refractivite, const float& indiceRefraction) :
+			_colorA(colorA),
+			_colorB(colorB),
 			_parametreDiffus(parametreDiffus),
 			_parametreAmbiant(parametreAmbiant),
 			_parametreSpeculaire(parametreSpeculaire),
@@ -24,18 +25,18 @@ namespace ISICG_ISIR
 			Vec3f pointTouche = ray.getPosition() + (pos._distance) * ray.getDirection();
 			if (abs(sin(pointTouche.z / 10)) >= 0.75f) {
 				if (sin(pointTouche.x / 10) > 0.0f) {
-					couleurDamier = _color;
+					couleurDamier = _colorA;
 				}
 				else {
-					couleurDamier = Vec3f(1.0f - _color.x, 1.0f - _color.y, 1.0f - _color.z);
+					couleurDamier = _colorB;
 				}
 			}
 			else {
 				if (sin(pointTouche.x / 10) > 0.0f) {
-					couleurDamier = Vec3f(1.0f - _color.x, 1.0f - _color.y, 1.0f - _color.z);
+					couleurDamier = _colorB;
 				}
 				else {
-					couleurDamier = _color;
+					couleurDamier = _colorA;
 				}
 			}
 			Vec3f maCouleur = VEC3F_ZERO;
@@ -67,7 +68,8 @@ namespace ISICG_ISIR
 
 	private:
 		float posX;
-		Vec3f _color;
+		Vec3f _colorA;
+		Vec3f _colorB;
 		float _parametreDiffus = 0.0f;
 		float _parametreAmbiant = 0.0f;
 		float _parametreSpeculaire = 0.0f;
