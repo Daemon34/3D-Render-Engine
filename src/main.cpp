@@ -103,7 +103,7 @@ namespace ISICG_ISIR
 		sphereReflect5.setMaterial(&materialCookTorranceRaf);
 
 		Plane plan = Plane(Vec3f(0.0f, 1.0f, 0.0f), Vec3f(0.0f, -2.0f, 0.0f));
-		DamierMaterial materialSol(Vec3f(1.0f, 0.0f, 0.0f), 0.9f, 0.1f, 0.0f, 0.0f, 0.0f, 1.0f);
+		DamierMaterial materialSol(Vec3f(0.0f, 0.98f, 0.39f), Vec3f(0.0f, 0.46f, 0.19f), 0.9f, 0.1f, 0.0f, 0.0f, 0.0f, 1.0f);
 		plan.setMaterial(&materialSol);
 
 		// -----------------------------------------------------------------------------------
@@ -148,15 +148,15 @@ namespace ISICG_ISIR
 		// -------------------------- SCENE ------------------------------------------------------
 
 		std::vector<AObject3D*> objects;
-		objects.emplace_back(&sphereReflect4);
+		//objects.emplace_back(&sphereReflect4);
 		//objects.emplace_back(&sphereReflect5);
 		//objects.emplace_back(&sphereReflect3);
-		objects.emplace_back(&sphereVerte);
-		objects.emplace_back(&sphereRouge);
-		objects.emplace_back(&sphereViolet);
-		objects.emplace_back(&sphereBleu);
+		//objects.emplace_back(&sphereVerte);
+		//objects.emplace_back(&sphereRouge);
+		//objects.emplace_back(&sphereViolet);
+		//objects.emplace_back(&sphereBleu);
 		objects.emplace_back(&plan);
-		//objects.emplace_back(&metaballs);
+		objects.emplace_back(&metaballs);
 
 		Chrono chrono;
 		Camera maCamera = Camera(Vec3f(0.0f, 8.0f, -5.0f), Vec3f(0.0f, -0.5f, 1.0f), 0.5f, float(height) / float(width));
