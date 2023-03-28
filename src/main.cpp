@@ -22,6 +22,7 @@
 #include "raytracer.hpp"
 
 #include <omp.h>
+#include <signal.h>
 
 namespace ISICG_ISIR
 {
@@ -35,6 +36,16 @@ namespace ISICG_ISIR
 		}
 		std::cout << "] " << int(progress * 100.0) << " %\r";
 		std::cout.flush();
+	}
+
+	static ImageJPG* image = nullptr;
+	static std::string imageName;
+	static bool isImageSaved;
+
+	void onProgramInterrupted(int sig) {
+		std::cout << "Program interrupted !" << std::endl;
+		image->save(imageName);
+		abort();
 	}
 
 	int main(int argc, char** argv)
@@ -51,8 +62,10 @@ namespace ISICG_ISIR
 		const uint width = atoi(argv[2]);
 		const uint height = atoi(argv[3]);
 
-		ImageJPG image(width, height);
+		image = new ImageJPG(width, height);
+		imageName = name;
 
+		signal(SIGINT, onProgramInterrupted);
 		// G�n�rateur nombre al�atoire
 		std::random_device rd;
 		std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
@@ -130,9 +143,9 @@ namespace ISICG_ISIR
 
 		TriangleMesh mesh;
 		mesh.setMaterial(&materialCookTorrance);
-		mesh.load("data/obj/Cube.obj");
+		mesh.load("data/obj/Bunny.obj");
 		mesh.scale(Vec3f(1.5f, 1.5f, 1.5f));
-		mesh.translate(Vec3f(0.0f, 3.0f, 3.0f));
+		mesh.translate(Vec3f(0.0f, 0.0f, 3.0f));
 
 		// --------------------------------------------------------------------------------------
 
@@ -172,14 +185,14 @@ namespace ISICG_ISIR
 		chrono.start();
 
 		// rendering loop
-		for (int h = 0; h < height; ++h)
+		#pragma omp parallel for collapse(2)
+		for (int w = 0; w < width; ++w)
 		{
-			for (int w = 0; w < width; ++w)
+			for (int h = 0; h < height; ++h)
 			{
 				std::vector<Vec3f> rayColors(ANTIALLIASING);
 
 				// Boucle pour l'antialliasing
-				#pragma omp parallel for
 				for (int i = 0; i < rayColors.size(); i++) {
 					// G�n�ration d'un rayon pour un pixel de l'image � partir de la cam�ra
 					Ray rayon = maCamera.generateRay(Vec3f(float(w + dis(gen)) / float(width), float(h + dis(gen)) / float(height), 0.0f));
@@ -192,7 +205,7 @@ namespace ISICG_ISIR
 				}
 				Vec3f finalColor = colorSumm / ANTIALLIASING; // Moyenne des couleurs de chaque rayon
 
-				image.setPixel(w, h, finalColor); // Mise a jour du pixel dans l'image finale
+				image->setPixel(w, h, finalColor); // Mise a jour du pixel dans l'image finale
 			}
 
 			// Only main thread should log things
@@ -204,11 +217,11 @@ namespace ISICG_ISIR
 		chrono.stop();
 		std::cout << "=" << std::endl;
 		std::cout << "Rendering done. Image computed in "
-			<< chrono.elapsedTime() << "s (" << image.getWidth() << "x"
-			<< image.getHeight() << ")" << std::endl;
+			<< chrono.elapsedTime() << "s (" << image->getWidth() << "x"
+			<< image->getHeight() << ")" << std::endl;
 
 		std::cout << "Save image as: " << name << std::endl;
-		image.save(name);
+		image->save(name);
 
 		return EXIT_SUCCESS;
 	}
