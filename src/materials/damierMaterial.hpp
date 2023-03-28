@@ -40,14 +40,12 @@ namespace ISICG_ISIR
 				}
 			}
 			Vec3f maCouleur = VEC3F_ZERO;
-			//for (int i = 0; i < nbRayonSphereLight; i++) {
-				Vec3f directionLumiere = normalize(light.getPosition() - (ray.getPosition() + (pos._distance + 0.01f) * ray.getDirection()));
-				float coefficientDiffus = _parametreDiffus * __max(dot(pos._normale, directionLumiere), 0.0f);
-				Vec3f refletSphere = normalize(glm::reflect(directionLumiere, pos._normale));
-				float coefficientSpeculaire = _parametreSpeculaire * pow(__max(dot(refletSphere, -ray.getDirection()), 0.0f), 100.0f);
-				maCouleur = light.getColor() * couleurDamier * (coefficientDiffus + _parametreAmbiant) + light.getColor() * coefficientSpeculaire;
-			//}
-				return maCouleur;
+			Vec3f directionLumiere = normalize(light.getPosition() - (ray.getPosition() + (pos._distance + 0.01f) * ray.getDirection()));
+			float coefficientDiffus = _parametreDiffus * __max(dot(pos._normale, directionLumiere), 0.0f);
+			Vec3f refletSphere = normalize(glm::reflect(directionLumiere, pos._normale));
+			float coefficientSpeculaire = _parametreSpeculaire * pow(__max(dot(refletSphere, -ray.getDirection()), 0.0f), 100.0f);
+			maCouleur = light.getColor() * couleurDamier * (coefficientDiffus + _parametreAmbiant) + light.getColor() * coefficientSpeculaire;
+			return maCouleur;
 		}
 
 		float getReflectivite() {
