@@ -25,7 +25,7 @@
 
 namespace ISICG_ISIR
 {
-	void displayProgressBar(float progress, int height) {
+	void displayProgressBar(float progress) {
 		std::cout << "[";
 		int pos = progressBarWidth * progress;
 		for (int i = 0; i < progressBarWidth; ++i) {
@@ -53,7 +53,7 @@ namespace ISICG_ISIR
 
 		ImageJPG image(width, height);
 
-		// Générateur nombre aléatoire
+		// Gï¿½nï¿½rateur nombre alï¿½atoire
 		std::random_device rd;
 		std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
 		std::uniform_real_distribution<float> dis(-1.0f, 1.0f);
@@ -130,7 +130,7 @@ namespace ISICG_ISIR
 
 		TriangleMesh mesh;
 		mesh.setMaterial(&materialCookTorrance);
-		mesh.load("data/obj/Bunny.obj");
+		mesh.load("data/obj/Cube.obj");
 		mesh.scale(Vec3f(1.5f, 1.5f, 1.5f));
 		mesh.translate(Vec3f(0.0f, 3.0f, 3.0f));
 
@@ -148,14 +148,14 @@ namespace ISICG_ISIR
 		// -------------------------- SCENE ------------------------------------------------------
 
 		std::vector<AObject3D*> objects;
-		//objects.emplace_back(&sphereReflect4);
+		objects.emplace_back(&sphereReflect4);
 		//objects.emplace_back(&sphereReflect5);
 		//objects.emplace_back(&sphereReflect3);
-		//objects.emplace_back(&sphereVerte);
-		//objects.emplace_back(&sphereRouge);
-		//objects.emplace_back(&sphereViolet);
-		//objects.emplace_back(&sphereBleu);
-		//objects.emplace_back(&plan);
+		objects.emplace_back(&sphereVerte);
+		objects.emplace_back(&sphereRouge);
+		objects.emplace_back(&sphereViolet);
+		objects.emplace_back(&sphereBleu);
+		objects.emplace_back(&plan);
 		//objects.emplace_back(&metaballs);
 
 		Chrono chrono;
@@ -172,7 +172,6 @@ namespace ISICG_ISIR
 		chrono.start();
 
 		// rendering loop
-		#pragma omp parallel for collapse(2)
 		for (int h = 0; h < height; ++h)
 		{
 			for (int w = 0; w < width; ++w)
@@ -180,8 +179,9 @@ namespace ISICG_ISIR
 				std::vector<Vec3f> rayColors(ANTIALLIASING);
 
 				// Boucle pour l'antialliasing
-				for (int i = 0; i < 32; i++) {
-					// Génération d'un rayon pour un pixel de l'image à partir de la caméra
+				#pragma omp parallel for
+				for (int i = 0; i < rayColors.size(); i++) {
+					// Gï¿½nï¿½ration d'un rayon pour un pixel de l'image ï¿½ partir de la camï¿½ra
 					Ray rayon = maCamera.generateRay(Vec3f(float(w + dis(gen)) / float(width), float(h + dis(gen)) / float(height), 0.0f));
 					rayColors[i] = couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
 				}
@@ -197,7 +197,7 @@ namespace ISICG_ISIR
 
 			// Only main thread should log things
 			if (omp_get_thread_num() == 0) {
-				displayProgressBar(progress, height);
+				displayProgressBar(progress);
 			}
 			progress += (1.0f / height);
 		}
