@@ -4,7 +4,7 @@ using namespace ISICG_ISIR;
 
 // Fonction permettant de calculer les intersection entre un rayon et les objets
 // puis qui renvoie l'intersection la plus proche.
-Intersection calculIntersections(const std::vector<AObject3D*>& objects, const Ray& rayon, const Light& lumiere, float distanceMax, float distanceEpsilon, BVH& monBVH) {
+Intersection calculIntersections(const std::vector<AObject3D*>& objects, const Ray& rayon, float distanceMax, float distanceEpsilon, BVH& monBVH) {
 	Intersection monIntersectionMeshs = monBVH.parcoursBVH(rayon);
 	Intersection monIntersectionPrimitives;
 	monIntersectionPrimitives._obj = nullptr;
@@ -44,7 +44,7 @@ Intersection calculIntersections(const std::vector<AObject3D*>& objects, const R
 
 // Fonction qui renvoie la couleur obtenue à partir d'un rayon
 Vec3f couleur(const Ray& rayon, uint nbRecursive, const Light& lumiere, std::vector<AObject3D*> objects, BVH monBVH) {
-	Intersection intersection = calculIntersections(objects, rayon, lumiere, 10000.0f, 0.0001f, monBVH);
+	Intersection intersection = calculIntersections(objects, rayon, 10000.0f, 0.0001f, monBVH);
 	Vec3f maCouleur = Vec3f(0.36f, 0.6f, 0.96f);
 	if (intersection._obj == nullptr) {
 		return maCouleur;
@@ -86,7 +86,7 @@ Vec3f couleur(const Ray& rayon, uint nbRecursive, const Light& lumiere, std::vec
 		float nbIntersectionsOmbres = 0.0f;
 		for (int i = 0; i < nbRayonSphereLight; i++) {
 			Ray rayonOmbre = Ray(positionIntersection, lumiere.getPosition() - positionIntersection);
-			Intersection intersectionOmbre = calculIntersections(objects, rayonOmbre, lumiere, MAX_DISTANCE, DIST_EPSILON, monBVH);
+			Intersection intersectionOmbre = calculIntersections(objects, rayonOmbre, MAX_DISTANCE, DIST_EPSILON, monBVH);
 			if (intersectionOmbre._obj != nullptr) {
 				nbIntersectionsOmbres += 1;
 			}
