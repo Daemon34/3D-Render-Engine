@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <numeric>
 
 #include "3D/sphere.hpp"
 #include "3D/plane.hpp"
@@ -185,20 +186,20 @@ namespace ISICG_ISIR
 		chrono.start();
 
 		// rendering loop
-		#pragma omp parallel for collapse(2)
+		#pragma omp parallel for schedule(dynamic, 1)
 		for (int w = 0; w < width; ++w)
 		{
 			for (int h = 0; h < height; ++h)
 			{
-				Vec3f colorSumm = VEC3F_ZERO;
+				std::vector<Vec3f> rayColors(ANTIALLIASING, VEC3F_ZERO);
 				// Boucle pour l'antialliasing
-				for (int i = 0; i < ANTIALLIASING; i++) {
-					// G�n�ration d'un rayon pour un pixel de l'image � partir de la cam�ra
+				for (int i = 0; i < rayColors.size(); i++) {
+					// Génération d'un rayon pour un pixel de l'image à partir de la caméra
 					Ray rayon = maCamera.generateRay(Vec3f(float(w + dis(gen)) / float(width), float(h + dis(gen)) / float(height), 0.0f));
-					colorSumm += couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
+					rayColors[i] = couleur(rayon, 0, lumiere, objects, monBVH); // Ajout de la couleur obtenue par le rayon
 				}
 
-				Vec3f finalColor = colorSumm / ANTIALLIASING; // Moyenne des couleurs de chaque rayon
+				Vec3f finalColor = std::accumulate(rayColors.begin(), rayColors.end(), VEC3F_ZERO) / ANTIALLIASING; // Moyenne des couleurs de chaque rayon
 
 				image->setPixel(w, h, finalColor); // Mise a jour du pixel dans l'image finale
 			}
@@ -207,6 +208,7 @@ namespace ISICG_ISIR
 			if (omp_get_thread_num() == 0) {
 				displayProgressBar(progress);
 			}
+			#pragma omp atomic
 			progress += (1.0f / height);
 		}
 		chrono.stop();
