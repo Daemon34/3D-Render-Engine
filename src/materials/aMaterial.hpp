@@ -7,6 +7,7 @@
 
 namespace ISICG_ISIR
 {
+	// Abstract class defining a generic material
 	class AMaterial
 	{
 	public:

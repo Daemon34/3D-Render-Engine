@@ -2,8 +2,7 @@
 
 using namespace ISICG_ISIR;
 
-// Fonction permettant de calculer les intersection entre un rayon et les objets
-// puis qui renvoie l'intersection la plus proche.
+// Compute all intersections between a ray and all objects in the scene and return the closest one
 Intersection calculIntersections(const std::vector<AObject3D*>& objects, const Ray& rayon, const BVH& monBVH) {
 	Intersection monIntersectionMeshs = monBVH.parcoursBVH(rayon);
 	Intersection monIntersectionPrimitives;
@@ -42,7 +41,7 @@ Intersection calculIntersections(const std::vector<AObject3D*>& objects, const R
 	}
 }
 
-// Fonction qui renvoie la couleur obtenue à partir d'un rayon
+// Return the pixel color depending on what the ray will hit
 Vec3f couleur(const Ray& rayon, uint nbRecursive, const Light& lumiere, const std::vector<AObject3D*>& objects, const BVH& monBVH) {
 	Intersection intersection = calculIntersections(objects, rayon, monBVH);
 	Vec3f maCouleur = Vec3f(0.36f, 0.6f, 0.96f);
