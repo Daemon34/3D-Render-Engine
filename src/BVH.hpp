@@ -25,7 +25,7 @@ namespace ISICG_ISIR
 		} comparateurX;
 
 		void creationBVH(std::vector<Triangle>& listeTriangle) {
-			_boundingBox.trouverVolumeEnglobant(listeTriangle);
+			_boundingBox.computeBoundingBox(listeTriangle);
 			if (listeTriangle.size() < 8) {
 				_enfantDroite = nullptr;
 				_enfantGauche = nullptr;
@@ -50,9 +50,9 @@ namespace ISICG_ISIR
 				for (uint i = 0; i < listeTriangle.size(); i++) {
 					int nbTriangleGauche = i;
 					int nbTriangleDroite = listeTriangle.size() - nbTriangleGauche;
-					float aireGauche = boitesGauche[i].calculerAire();
-					float aireDroite = boitesDroite[i].calculerAire();
-					SAH[i] = (aireGauche * nbTriangleGauche + aireDroite * nbTriangleDroite) / _boundingBox.calculerAire();
+					float aireGauche = boitesGauche[i].computeSurfaceArea();
+					float aireDroite = boitesDroite[i].computeSurfaceArea();
+					SAH[i] = (aireGauche * nbTriangleGauche + aireDroite * nbTriangleDroite) / _boundingBox.computeSurfaceArea();
 					if (SAH[i] < minSAH) {
 						minSAH = SAH[i];
 						idSAH = i;

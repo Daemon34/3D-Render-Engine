@@ -8,30 +8,14 @@ namespace ISICG_ISIR
 	class Camera
 	{
 	public:
-		Camera();
-		Camera(const Vec3f &position, const Vec3f &direction, const float &focale, const float &ratio)
-			: _position(position), _direction(direction), _focale(focale),
-			  _ratio(ratio)
-		{
-		}
+		Camera() = default;
+		Camera(const Vec3f& position, const Vec3f& direction, const float& focale, const float& ratio);
 
-		Vec3f getDirection() {
-			return _direction;
-		}
+		Vec3f getDirection();
 
-		Vec3f getPosition() {
-			return _position;
-		}
+		Vec3f getPosition();
 
-		Ray generateRay(Vec3f pixel_pos){
-			_up = cross(_direction, cross(_direction, Vec3f(0.0, 1.0, 0.0)));
-			Vec3f directionDroite = cross(_direction, _up);
-			Vec3f centreImage = _position + (_direction * _focale);
-			Vec3f positionPixel = centreImage - (0.5f - pixel_pos.x) * directionDroite - (0.5f - pixel_pos.y) * _up * _ratio;
-			Vec3f directionRayon = normalize(positionPixel - _position);
-			Ray rayon = Ray(_position, directionRayon);
-			return rayon;
-		};
+		Ray generateRay(Vec3f pixel_pos);
 
 	private:
 		Vec3f _position = VEC3F_ZERO;

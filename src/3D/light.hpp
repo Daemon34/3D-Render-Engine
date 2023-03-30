@@ -1,4 +1,4 @@
-/* Classe abstraite définissant une lumière de manière générale */
+// Abstract class defining a general light source
 
 #ifndef __ISICG_ISIR_LIGHT__
 #define __ISICG_ISIR_LIGHT__

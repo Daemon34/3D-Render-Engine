@@ -7,21 +7,25 @@
 
 namespace ISICG_ISIR
 {
+	// Abstract base class for 3D objects in the scene
 	class AObject3D
 	{
 	public:
 		
+		// Set the material of the object
 		void setMaterial(AMaterial *const material)
 		{
 			_material = material;
 		}
 
+		// Get the material of the object
 		AMaterial* getMaterial() const {
 			return _material;
 		}
 
-		// Compute ray/object intersection 
-		// return parameter t and set normal if intersection exists
+		// Compute the intersection between a ray and the object.
+		// Returns a vector of Intersection objects, containing the intersection 
+		// parameter t and the surface normal, if an intersection exists.
 		virtual std::vector<Intersection> intersect(const Ray &ray) const
 			= 0;
 

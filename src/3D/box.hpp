@@ -11,26 +11,34 @@ namespace ISICG_ISIR
 	class Box : public AObject3D
 	{
 	public:
+		// Default constructor
 		Box() = default;
+
+		// Constructor with min and max corners of the box
 		Box(const Vec3f& min, const Vec3f& max)
 			: _min(min), _max(max)
 		{
 		}
 
-		float calculerAire() {
+		// Computes and returns the surface area of the box
+		float computeSurfaceArea() {
+			// Calculate length, width, and height of the box
 			float l = abs(_max.x - _min.x);
 			float L = abs(_max.y - _min.y);
 			float h = abs(_max.z - _min.z);
+			// Return the surface area of the box
 			return (2 * l * L + 2 * l * h + 2 * L * h);
 		}
-			
-		void trouverVolumeEnglobant(const std::vector<Triangle>& listeTriangle) {
+		
+		// Computes the bounding box for a list of triangles
+		void computeBoundingBox(const std::vector<Triangle>& listeTriangle) {
 			for (uint i = 0; i < listeTriangle.size(); i++) {
 				for (uint indSommet = 0; indSommet < 3; indSommet++) {
+					// Get the position of the vertex
 					Triangle tri = listeTriangle[i];
 					Vec3f positionSommet = listeTriangle[i].getSommet(indSommet);
 
-					// Calcul valeur minimale
+					// Update minimum and maximum corners of the box
 					if (positionSommet.x < _min.x) {
 						_min.x = positionSommet.x;
 					}
@@ -40,8 +48,6 @@ namespace ISICG_ISIR
 					if (positionSommet.z < _min.z) {
 						_min.z = positionSommet.z;
 					}
-
-					// Calcul valeur maximale
 					if (positionSommet.x > _max.x) {
 						_max.x = positionSommet.x;
 					}
@@ -55,12 +61,12 @@ namespace ISICG_ISIR
 			}
 		}
 
-		// Creation d'une boite allant d'un triangle initial jusqu'à un nouveau triangle
+		// Enlarges the box to include a new triangle
 		void enlarge(Triangle& triangleInitial, Triangle& nouveauTriangle) {
+			// Update the minimum and maximum corners of the box using the vertices of the initial and new triangles
 			for (uint indSommet = 0; indSommet < 3; indSommet++) {
 				Vec3f positionSommet = triangleInitial.getSommet(indSommet);
 
-				// Calcul valeur minimale
 				if (positionSommet.x < _min.x) {
 					_min.x = positionSommet.x;
 				}
@@ -70,8 +76,6 @@ namespace ISICG_ISIR
 				if (positionSommet.z < _min.z) {
 					_min.z = positionSommet.z;
 				}
-
-				// Calcul valeur maximale
 				if (positionSommet.x > _max.x) {
 					_max.x = positionSommet.x;
 				}
@@ -85,7 +89,6 @@ namespace ISICG_ISIR
 			for (uint indSommet = 0; indSommet < 3; indSommet++) {
 				Vec3f positionSommet = nouveauTriangle.getSommet(indSommet);
 
-				// Calcul valeur minimale
 				if (positionSommet.x < _min.x) {
 					_min.x = positionSommet.x;
 				}
@@ -95,8 +98,6 @@ namespace ISICG_ISIR
 				if (positionSommet.z < _min.z) {
 					_min.z = positionSommet.z;
 				}
-
-				// Calcul valeur maximale
 				if (positionSommet.x > _max.x) {
 					_max.x = positionSommet.x;
 				}
