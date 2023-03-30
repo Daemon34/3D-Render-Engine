@@ -186,7 +186,7 @@ namespace ISICG_ISIR
 		chrono.start();
 
 		// rendering loop
-		#pragma omp parallel for schedule(dynamic, 1)
+		#pragma omp parallel for schedule(dynamic, 5)
 		for (int w = 0; w < width; ++w)
 		{
 			for (int h = 0; h < height; ++h)

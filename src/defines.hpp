@@ -19,7 +19,7 @@ namespace ISICG_ISIR
 	const float DIST_EPSILON = 0.0001f; // Decalage imprécision numériques
 	const float MAX_DISTANCE = 10000.0f; // Distance maximum d'affichage
 	const float nbRayonSphereLight = 32.0f; // Nombre de rayons pour les lumières sphériques
-	const float ANTIALLIASING = 32.0f; // Nombre de supersampling pour l'anti-aliassage
+	const float ANTIALLIASING = 8.0f; // Nombre de supersampling pour l'anti-aliassage
 	const float FIN_DE_SCENE = 100.0f; // Arrêt du parcours du rayon pour le Sphere Tracing (metaballs)
 	const float META_COEFF = 8.0f; // Coefficient pour les metaballs
 

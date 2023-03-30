@@ -1,5 +1,3 @@
-// Abstract class defining a general light source
-
 #ifndef __ISICG_ISIR_LIGHT__
 #define __ISICG_ISIR_LIGHT__
 
@@ -8,6 +6,7 @@
 
 namespace ISICG_ISIR
 {	
+	// Abstract class defining a general light source
 	class Light
 	{
 	public:
