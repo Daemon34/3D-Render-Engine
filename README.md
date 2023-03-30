@@ -14,7 +14,7 @@ The code depends on the following libraries:
 
 The program must be launched with three arguments: the width and height of the output image, and the name of the output file. For example:
 ```
-./raytracer 800 600 output.jpg
+./ISICG_ISIR_RT_2020.exe 800 600 output.jpg
 ```
 
 # Scene description
