@@ -72,9 +72,10 @@ namespace ISICG_ISIR
 		std::mt19937 gen(rd()); // mersenne_twister_engine seeded with rd()
 		std::uniform_real_distribution<float> dis(-1.0f, 1.0f);
 
-		// -------------- CREATION DES OBJETS DANS LA SCENE --------------------------------------------------
+#pragma region SceneCreation
+		// -------------- SECTION CREATING OBJECTS IN THE SCENE --------------------------------------------------
 
-		// -------------------------- SPHERE ET PLAN --------------------------------------------------------
+		// -------------------------- SPHERE AND PLANE --------------------------------------------------------
 
 		Sphere sphereVerte = Sphere(Vec3f(-7.0f, 4.0f, 5.0f), 0.8f);
 		FlatColorMaterial materialVert(Vec3f(1.0f, 1.0f, 1.0f), 0.7f, 0.1f, 0.2f, 0.0f, 0.8f, 2.2f);
@@ -176,6 +177,8 @@ namespace ISICG_ISIR
 		Camera maCamera = Camera(Vec3f(0.0f, 8.0f, -5.0f), Vec3f(0.0f, -0.5f, 1.0f), 0.5f, float(height) / float(width));
 
 		// --------------------------------------------------------------------------------------------
+
+#pragma endregion
 
 		std::cout << "Setting up OpenMP..." << std::endl;
 		omp_set_nested(1);
