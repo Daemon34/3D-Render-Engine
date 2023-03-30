@@ -3,48 +3,62 @@
 
 namespace ISICG_ISIR
 {
-	// Fonction de distribution
+	// Beckmann distribution function
 	float CookTorrance::Distribution_Beckmann(const Vec3f& halfVector, const Vec3f& normal, const float& alpha) {
+		// Calculate dot product between normal and half vector
 		float nDoth = std::min(0.0f, dot(normal, halfVector));
 		if (nDoth == 0.0f) {
 			return 0.0f;
 		}
 		else {
+			// Calculate squared dot product and alpha values
 			float nDothCarre = nDoth * nDoth;
 			float alphaCarre = alpha * alpha;
+			// Calculate the exponential term
 			float facteurExp = (nDothCarre - 1.0f) / (alphaCarre * nDothCarre);
+			// Calculate the denominator term
 			float denominateur = 3.14f * alphaCarre * (nDothCarre * nDothCarre);
+			// Calculate the final value of the distribution function
 			return (exp(facteurExp) / denominateur);
 		}
 	}
 
-	// Fonction de géométrie de Schlick_Beckmann
+	// Schlick-Beckmann geometry function
 	float Geometry_Schlick_Beckmann(const Vec3f& direction, const Vec3f& halfVector, const float& alpha) {
+		// Calculate k and dot product between half vector and direction
 		float k = alpha * sqrt(2.0f / 3.14f);
 		float dDoth = dot(halfVector, direction);
+		// Calculate the denominator term
 		float denominateur = (dDoth * (1 - k)) + k;
+		// Calculate the final value of the geometry function
 		return (dDoth / denominateur);
 	}
 
-	// Fonction de géométrie de CookTorrance
+	// Cook-Torrance geometry function
 	float CookTorrance::Geometry_CookTorrance(const Vec3f& directionVue, const Vec3f& normal, const Vec3f& directionLumiere, const Vec3f& halfVector) {
+		// Calculate dot products between vectors
 		float hdotN = dot(halfVector, normal);
 		float vdotN = dot(directionVue, normal);
 		float vdotH = dot(directionVue, halfVector);
 		float ldotN = dot(directionLumiere, normal);
+		// Calculate the first and second terms
 		float term1 = (2 * hdotN * vdotN) / vdotH;
 		float term2 = (2 * hdotN * ldotN) / vdotH;
+		// Calculate the final value of the geometry function
 		return glm::min(1.0f, glm::min(term1, term2));
 	}
 
-	// Terme de Fresnel
+	// Smith's shadowing-masking function (Fresnel factor)
 	float CookTorrance::Fresnel_Smith(const float& f0, const Vec3f& lumiereDirection, const Vec3f& halfVector) {
+		// Calculate the dot product between light direction and half vector
 		float lDoth = dot(lumiereDirection, halfVector);
-		float produit = (1.0f - f0) * pow(1.0f - lDoth, 5);
-		return (f0 + produit);
+		// Calculate the product term
+		float product = (1.0f - f0) * pow(1.0f - lDoth, 5);
+		// Calculate the final value of the Fresnel factor
+		return (f0 + product);
 	}
 
-	// BRDF à microfacette
+	// Microfacet BRDF
 	float CookTorrance::BRDF(const Vec3f& directionLumiere, const Vec3f& directionVue, const float& alpha, const Vec3f& normal, const float& ior) {
 		Vec3f halfVector = normalize(directionLumiere + directionVue);
 		float f0 = abs((1.0f - ior) / (1.0f + ior));
