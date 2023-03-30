@@ -2,8 +2,6 @@
 #define __ISICG_ISIR_COOKTORRANCE__
 
 #include "defines.hpp"
-#include "3D/ray.hpp"
-#include <algorithm>
 
 namespace ISICG_ISIR
 {

@@ -2,7 +2,6 @@
 #define __ISICG_ISIR_LIGHT__
 
 #include <vector>
-#include "aObject3D.hpp"
 
 namespace ISICG_ISIR
 {	

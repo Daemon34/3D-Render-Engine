@@ -1,6 +1,3 @@
-/* Classe définissant une lumière sphérique définie par une position (le centre de la sphère),
- d'un rayon et d'une couleur.*/
-
 #ifndef __ISICG_ISIR_SPHERELIGHT__
 #define __ISICG_ISIR_SPHERELIGHT__
 
@@ -10,6 +7,7 @@
 
 namespace ISICG_ISIR
 {
+	// Class defining a sphere light using the center of the sphere, a radius and a light color
 	class SphereLight : public Light
 	{
 	public:

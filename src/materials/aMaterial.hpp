@@ -10,11 +10,11 @@ namespace ISICG_ISIR
 	// Abstract class defining a generic material
 	class AMaterial
 	{
-	public:
-		virtual Vec3f shade(const Ray &ray, const Intersection &pos, const Light &light) = 0;
-		virtual float getReflectivite() = 0;
-		virtual float getRefractivite() = 0;
-		virtual float getIndiceRefraction() = 0;
+		public:
+			virtual Vec3f shade(const Ray &ray, const Intersection &pos, const Light &light) = 0;
+			virtual float getReflectivite() = 0;
+			virtual float getRefractivite() = 0;
+			virtual float getIndiceRefraction() = 0;
 	};
 } // namespace ISICG_ISIR
 
